@@ -12,11 +12,11 @@ class Person(BaseModel):
 
 class Client(Person):
     balance = models.FloatField()
-    def AddBalance(amount: int, PaymentMethod: payment_method):
+    def AddBalance(self, amount, payment_method):
          pass
-    def TransferBalance(Client: destinary):
+    def TransferBalance(self, destinary):
          pass
-    def ChargeTicket(BusRoute: route):
+    def ChargeTicket(self, route):
         pass
 
 class PaymentMethod(BaseModel):
