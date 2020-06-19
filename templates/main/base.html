@@ -3,49 +3,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Document</title>
 </head>
 
 <body>
-    <div id="sidebar-wrapper" class="p-3 mb-2 bg-info text-white">
-        <nav id="spy">
-            <ul class="sidebar-nav nav">
-                <li>
-                    <a href="#" data-scroll>
-                        <span class=" fa fa-user-circle">Perfil</span>
-                    </a>
-                </li> 
-                <li>
-                    <a href="#" data-scroll>
-                        <span class=" fa fa-credit-card-alt">Monedero electronico</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" data-scroll>
-                        <span class="fa fa-book">Reportes</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#" data-scroll>
-                        <span class="fa fa-share-square-o">Cerrar sesion</span>
-                    </a>
-                </li>
-            </ul>
-            <div id="page-content-wrapper">
-                <div class="page-content inset" data-spy="scroll" data-target="#spy">
-                    <div class="row">
-      
-                            <div class="jumbotron text-center" >
-                                <h1>Hello Beautiful!</h1>
-                                 <p><a class="btn btn-default">Click On Me!</a>
-                                <a class="btn btn-info">Tweet Me!</a></p>
-                            </div>
-                    </div>    
-                </div>
-            </div>
-        </nav>
+    <div id="wrapper">
+        <div id="sidebar-wrapper">
+            <nav id="spy">
+                <ul class="sidebar-nav nav">
+                    <li>
+                        <a href="#">
+                            <span class=" fa fa-user-circle">Perfil</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class=" fa fa-credit-card-alt">Monedero electronico</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="fa fa-book">Reportes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="fa fa-share-square-o">Cerrar sesion</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
     </div>
 
+    <div id="content" , name="content">
+        {% block content %} {% endblock %}
+    </div>
 </body>
 
 </html>
