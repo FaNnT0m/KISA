@@ -2,19 +2,49 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Document</title>
 </head>
 
 <body>
-    <div id="wrapper">
-        
+    <div class="container-fluid h-100">
+        <div class="row h-100">
+            <aside class="col-12 col-md-2 p-0 bg-dark">
+                <nav class="navbar navbar-expand navbar-dark bg-dark flex-md-column flex-row align-items-start">
+                    <div class="collapse navbar-collapse">
+                        <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between sidebar-nav nav">
+                            <li>
+                                <a href="#">
+                                    <span class=" fa fa-user-circle">Perfil</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class=" fa fa-credit-card-alt">Monedero electronico</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="fa fa-book">Reportes</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="fa fa-share-square-o">Cerrar sesion</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </nav>
+            </aside>
+            <div id="content" , name="content">
+                {% block content %} {% endblock %}
+            </div>
+        </div>
     </div>
 
-    <div id="content" , name="content">
-        {% block content %} {% endblock %}
-    </div>
 </body>
 
 </html>
