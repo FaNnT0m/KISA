@@ -1,5 +1,4 @@
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,33 +7,42 @@
 </head>
 
 <body>
-    <div id="sidebar-wrapper">
+    <div id="sidebar-wrapper" class="p-3 mb-2 bg-info text-white">
         <nav id="spy">
             <ul class="sidebar-nav nav">
-                <li class="sidebar-brand">
-                    <a href="#home"><span class="fa fa-home solo">Home</span></a>
-                </li>
                 <li>
-                    <a href="#anch1" data-scroll>
-                        <span class="fa fa-anchor solo">Anchor 1</span>
+                    <a href="#" data-scroll>
+                        <span class=" fa fa-user-circle">Perfil</span>
+                    </a>
+                </li> 
+                <li>
+                    <a href="#" data-scroll>
+                        <span class=" fa fa-credit-card-alt">Monedero electronico</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#anch2" data-scroll>
-                        <span class="fa fa-anchor solo">Anchor 2</span>
+                    <a href="#" data-scroll>
+                        <span class="fa fa-book">Reportes</span>
                     </a>
                 </li>
                 <li>
-                    <a href="#anch3" data-scroll>
-                        <span class="fa fa-anchor solo">Anchor 3</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#anch4" data-scroll>
-                        <span class="fa fa-anchor solo">Anchor 4</span>
+                    <a href="#" data-scroll>
+                        <span class="fa fa-share-square-o">Cerrar sesion</span>
                     </a>
                 </li>
             </ul>
+            <div id="page-content-wrapper">
+                <div class="page-content inset" data-spy="scroll" data-target="#spy">
+                    <div class="row">
+      
+                            <div class="jumbotron text-center" >
+                                <h1>Hello Beautiful!</h1>
+                                 <p><a class="btn btn-default">Click On Me!</a>
+                                <a class="btn btn-info">Tweet Me!</a></p>
+                            </div>
+                    </div>    
+                </div>
+            </div>
         </nav>
     </div>
 
