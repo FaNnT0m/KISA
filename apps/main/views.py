@@ -4,8 +4,8 @@ from .forms import UserForm, PersonForm
 def home (request):
     return render(request,'main/index.html')
 
-def principal (request):
-    return render(request,'main/principal.html')
+def base (request):
+    return render(request,'main/base.html')
 
 def register (request):
     user_form = UserForm(request.POST or None)
