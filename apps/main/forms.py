@@ -1,27 +1,37 @@
 
 from django import forms
 from django.contrib.auth.models import User
-from .models import Person, PaymentMethod
+from django.contrib.auth.forms import UserCreationForm
+from .models import Client, PaymentMethod
 
+# Extendemos el UserCreationForm que viene por defecto
+# Le agregamos los fields extra de Client
+class ClientRegisterForm(UserCreationForm):
+    email = forms.EmailField(required=True)
+    birth_date = forms.DateField(required=True)
 
-class UserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = [
             'username',
-            'first_name',
-            'last_name',
             'email',
-            'password'
+            'birth_date',
+            'password1',
+            'password2'
         ]
 
+    # Sobreescribimos el save para crear primero el User y luego el Client
+    def save(self, commit=True):
+        if not commit:
+            raise NotImplementedError("Can't a new Client & User without commit")
 
-class PersonForm(forms.ModelForm):
-    class Meta:
-        model = Person
-        fields = [
-            'birth_date'
-        ]
+        user = super(ClientRegisterForm, self).save(commit=True)
+        client = Client(
+            user=user,
+            birth_date=self.cleaned_data['birth_date'],
+        )
+        client.save()
+        return client
 
 
 class PaymentMethodForm(forms.ModelForm):

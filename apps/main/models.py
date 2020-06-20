@@ -1,7 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-# Create your models here.
+
+
+# TODO: Seria bueno que dividiesemos las cosas en apps en el futuro
 
 
 PROVINCE_CHOICES = (
@@ -11,7 +13,7 @@ PROVINCE_CHOICES = (
     (4, "Heredia"),
     (5, "Guanacaste"),
     (6, "Puntarenas"),            
-    (7, "Limon")
+    (7, "Limon"),
 )
 
 
@@ -41,9 +43,9 @@ class BaseModel(models.Model):
         """
         Cada vez que se guarda un modelo, se actualizan los campos _date
         """
-        '''if not self.id:
+        if not self.id:
             self.created_date = timezone.now()
-        '''
+
         self.updated_date = timezone.now()
         return super(BaseModel, self).save(*args, **kwargs)
 
@@ -58,7 +60,7 @@ class Person(BaseModel):
 
 
 class Client(Person):
-    balance = models.FloatField()
+    balance = models.FloatField(default=0.0)
 
     def add_balance(self, amount, payment_method):
         self.balance += amount
@@ -70,6 +72,14 @@ class Client(Person):
     def charge_ticket(self, route):
         pass
 
+    def save(self, *args, **kwargs):
+        """
+        Se llena el last_login automaticamente
+        """
+        if not self.id:
+            self.last_login_date = timezone.now()
+
+        return super(Client, self).save(*args, **kwargs)
 
 class PaymentMethod(BaseModel):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)    

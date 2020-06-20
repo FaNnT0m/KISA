@@ -1,19 +1,20 @@
-from django.shortcuts import render
-from .forms import UserForm, PersonForm
-# Create your views here.
-def home (request):
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .forms import ClientRegisterForm
+
+def index(request):
     return render(request,'main/index.html')
 
-def base (request):
-    return render(request,'main/base.html')
+def register(request):
+    if request.method == 'POST':
+        form = ClientRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            messages.success(request, f'Account created for {username}!')
+            return redirect('index')
 
-def register (request):
-    user_form = UserForm(request.POST or None)
-    person_form = PersonForm(request.POST or None)
+    else:
+        form = ClientRegisterForm()
 
-    if user_form.is_valid() and person_form.is_valid():
-        user_form.save()
-        person_form.save()  
-    
-    context = {'user_form' : user_form, 'person_form' : person_form} # Two forms that will become one
-    return render(request,'main/register.html', context)
+    return render(request, 'main/register.html', {'form': form})
