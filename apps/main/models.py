@@ -10,7 +10,7 @@ PROVINCE_CHOICES = (
     ("3", "Cartago"),
     ("4", "Heredia"),
     ("5", "Guanacaste"),
-    ("6", "Puntarenas"),
+    ("6", "Puntarenas"),            
     ("7", "Limon")
 )
 
@@ -65,9 +65,9 @@ class BaseModel(models.Model):
         """
         Cada vez que se guarda un modelo, se actualizan los campos _date
         """
-        if not self.id:
+        '''if not self.id:
             self.created_date = timezone.now()
-
+        '''
         self.updated_date = timezone.now()
         return super(BaseModel, self).save(*args, **kwargs)
 
