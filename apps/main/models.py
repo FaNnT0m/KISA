@@ -40,8 +40,7 @@ class BaseModel(models.Model):
         abstract=True
 
     def save(self, *args, **kwargs):
-        """
-        Cada vez que se guarda un modelo, se actualizan los campos _date
+        """que se guarda un modelo, se actualizan los campos _date
         """
         if not self.id:
             self.created_date = timezone.now()
