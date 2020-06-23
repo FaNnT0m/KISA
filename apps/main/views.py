@@ -2,6 +2,9 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import ClientRegisterForm
 
+def base(request):
+    return render(request,'main/base.html')
+
 def index(request):
     return render(request,'main/index.html')
 

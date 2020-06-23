@@ -62,7 +62,7 @@ class Person(BaseModel):
 class Client(Person):
     balance = models.FloatField(default=0.0)
 
-    def add_balance(self, amount, payment_method):
+    def add_balance(self, amount, payment_method): 
         self.balance += amount
 
     def transfer_balance(self, amount, destinary):
@@ -70,7 +70,8 @@ class Client(Person):
         destinary.add_balance(destinary)
 
     def charge_ticket(self, route):
-        pass
+       self.balance -= route.ticket_price
+
 
     def save(self, *args, **kwargs):
         """
