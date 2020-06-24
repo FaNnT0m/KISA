@@ -1,29 +1,21 @@
 {% extends "./base.html" %} {% block content %}
 
-<body>
-    <div class="m-5">
-        <div class="row">   
-            <div class="col-md-3 ml-5 ">
-                <form>
-                    <div class="form-group">
-                        <label for="province">Provincia</label>
-                    </div>
-                    <div class="form-group">
-                        <label for="route">Escoja su ruta:</label>
-                    </div>
-                    <div class="form-group">
-                        <select id="routes">
-                            <option value="volvo">Volvo</option>
-                            <option value="saab">Saab</option>
-                            <option value="mercedes">Mercedes</option>
-                            <option value="audi">Audi</option>
-                        </select> 
-                    </div>
-                    <button type="submit" class="btn btn-primary">Pagar</button>
-                </form>
-            </div>    
-        </div>
-    </div>    
-</body>
+<form class="text-center mb-5">
+    <div class="form-group">
+        <label for="province">Provincia</label>
+    </div>
+    <div class="form-group">
+        <label for="route">Escoja su ruta:</label>
+    </div>
+    <div class="form-group">
+        <select id="routes">
+        <option value="volvo">Volvo</option>
+        <option value="saab">Saab</option>
+        <option value="mercedes">Mercedes</option>
+        <option value="audi">Audi</option>
+       </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Pagar</button>
+</form>
 
 {% endblock %}
