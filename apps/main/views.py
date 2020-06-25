@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import ClientRegisterForm
+from .forms import District
 from apps.main.models import District
 
 def base(request):
@@ -8,7 +9,8 @@ def base(request):
 
 def index(request):
     district = District.objects.values_list('name', flat=True) #Con 'flat' retorna el set limpio, sin comillas ni parentesis
-    return render(request,'main/index.html',{'district':district})
+    form = District.objects.values_list('province')
+    return render(request,'main/index.html',{'district':district,'form':form})
 
 def register(request):
     if request.method == 'POST':

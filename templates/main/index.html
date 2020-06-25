@@ -19,10 +19,9 @@
     </div>
     <div class="form-group">
         <select id="routes">
-        <option value="volvo">Volvo</option>
-        <option value="saab">Saab</option>
-        <option value="mercedes">Mercedes</option>
-        <option value="audi">Audi</option>
+            {% for province in form %}
+        <option value="{{province}}">{{province}}</option>
+            {%endfor%}
        </select>
     </div>
     <button type="submit" class="btn btn-primary">Pagar</button>

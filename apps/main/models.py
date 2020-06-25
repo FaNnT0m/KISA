@@ -95,7 +95,7 @@ class Driver(Person):
 
 class District(BaseModel):
     name = models.CharField(max_length = 80)
-    province = models.IntegerField(choices=PROVINCE_CHOICES)
+    province = models.IntegerField(choices=PROVINCE_CHOICES,default=1) #adds the choice on html
 
 
 class BusRoute(BaseModel):
