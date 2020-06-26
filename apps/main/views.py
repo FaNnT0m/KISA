@@ -12,7 +12,7 @@ def index(request):
     formDis= DistrictForm()
     formDis.fields['province'].choices=((1,'San Jose'),)
     client= Client.objects.get(pk=2)      #Aqui se utilizara una verificion de cual persona esta en el sistema para cobrarle
-    Client.charge_ticket()
+    
 
     context={'district':district,'formDis':formDis}
     return render(request,'main/index.html',context)
