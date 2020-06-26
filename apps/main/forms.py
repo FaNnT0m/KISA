@@ -2,7 +2,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Client, PaymentMethod, District
+from .models import *
 # Extendemos el UserCreationForm que viene por defecto
 # Le agregamos los fields extra de Client
 class ClientRegisterForm(UserCreationForm):
@@ -49,8 +49,10 @@ class PaymentMethodForm(forms.ModelForm):
         if len(cleaned_data['cv2']) != 3:
             self.add_error('cv2', 'This field is required')
 
-class District(forms.Form):
+class DistrictForm(forms.ModelForm):
+
+    class Meta:
+        model = District
+        fields = ['province']
    
-    province= forms.ChoiceField(choices=PROVINCE_CHOICES)
-                
    

@@ -1,29 +1,21 @@
 {% extends "./base.html" %} {% block content %}
 
 <form class="text-center mb-5">
-    <div class="form-group">
-        <label for="province">Escoja el distrito</label>
-    </div>
-    <div class="form-group">
-        <select id="routes">
+    {% csrf_token %}
+    <div class="form-group">District
+        <select>
             {% for district in district %}
                 <option value="{{district}}">{{district}}</option>
             {%endfor%}
        </select>
     </div>
     <div class="form-group">
-        <label for="province">Provincia</label>
+        {{ formDis.as_p }}
     </div>
     <div class="form-group">
-        <label for="route">Escoja su ruta:</label>
+        <label for="route">Route:</label>
     </div>
-    <div class="form-group">
-        <select id="routes">
-            {% for province in form %}
-        <option value="{{province}}">{{province}}</option>
-            {%endfor%}
-       </select>
-    </div>
+
     <button type="submit" class="btn btn-primary">Pagar</button>
 </form>
 

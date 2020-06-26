@@ -1,16 +1,21 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import ClientRegisterForm
-from .forms import District
-from apps.main.models import District
+from .forms import ClientRegisterForm,DistrictForm
+from apps.main.models import *
+
 
 def base(request):
     return render(request,'main/base.html')
 
 def index(request):
     district = District.objects.values_list('name', flat=True) #Con 'flat' retorna el set limpio, sin comillas ni parentesis
-    form = District.objects.values_list('province')
-    return render(request,'main/index.html',{'district':district,'form':form})
+    formDis= DistrictForm()
+    formDis.fields['province'].choices=((1,'San Jose'),)
+    client= Client.objects.get(pk=2)      #Aqui se utilizara una verificion de cual persona esta en el sistema para cobrarle
+    Client.charge_ticket()
+
+    context={'district':district,'formDis':formDis}
+    return render(request,'main/index.html',context)
 
 def register(request):
     if request.method == 'POST':
