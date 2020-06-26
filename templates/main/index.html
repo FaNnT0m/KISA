@@ -1,6 +1,6 @@
 {% extends "./base.html" %} {% block content %}
 
-<form class="text-center mb-5">
+<form class="text-center mb-5" method="POST">
     {% csrf_token %}
     <div class="form-group">District
         <select>
@@ -13,15 +13,19 @@
         {{ formDis.as_p }}
     </div>
     <div class="form-group">
-        <label for="route">Route:</label>
-        <select>
+        <label>Route:</label>
+        <select name="busroute">
             {% for route in route %}
-                <option value="{{route}}">{{route}}</option>
+                {% for ticket in ticket %}
+                <option value="{{route}}">{{route}}, {{ticket}} colones</option>
+                {%endfor%}
             {%endfor%}
-       </select>
+        </select>
     </div>
-
-    <button type="submit" class="btn btn-primary">Pay</button>
+    <div class="form-group">
+        <label name=ticket_price></label>
+    </div>
+    <button type="submit" class="btn btn-primary">Aceptar</button>
 </form>
 
 {% endblock %}
