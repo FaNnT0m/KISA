@@ -13,8 +13,9 @@ def index(request):
     formDis.fields['province'].choices=((1,'San Jose'),)
     client= Client.objects.get(pk=2)      #Aqui se utilizara una verificion de cual persona esta en el sistema para cobrarle
     
+    route= BusRoute.objects.values_list('title',flat=True)
+    context={'district':district,'formDis':formDis,'route':route}
 
-    context={'district':district,'formDis':formDis}
     return render(request,'main/index.html',context)
 
 def register(request):
