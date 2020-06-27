@@ -61,7 +61,7 @@ class Person(BaseModel):
 class Client(Person):
     balance = models.FloatField(default=0.0)
 
-    def add_balance(self, amount, payment_method): 
+    def add_balance(self, amount, payment_method=None): 
         self.balance += amount
 
     def transfer_balance(self, amount, destinary):

@@ -1,0 +1,14 @@
+{% extends "./base.html" %} {% block content %}
+
+<div>
+    Balance: {{client.balance}}
+
+    <form method="POST" action="{%url 'digital_wallet' %}">
+        {% csrf_token %}
+        <label for="balance_to_add">Dinero a recargar</label><br>
+        <input type="text" id="balance_to_add" name="balance_to_add" value="0"><br>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+
+{% endblock %}
