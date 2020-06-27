@@ -42,9 +42,15 @@
                             <hr class="dropdown-divider">
 
                             <li class="mt-4">
-                                <a class="text-light" href="#">
-                                    <span class="fa fa-share-square-o"> <span> Cerrar sesion</span></span>
+                            {% if user.is_authenticated %}
+                                <a class="text-light" href="{% url 'logout' %}">
+                                    <span class="fa fa-share-square-o">Cerrar sesion</span>
                                 </a>
+                            {% else %}
+                                <a class="text-light" href="{% url 'login' %}">
+                                    <span class="fa fa-share-square-o">Iniciar sesion</span>
+                                </a>
+                            {% endif %}
                             </li>
                         </ul>
                     </div>
