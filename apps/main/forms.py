@@ -7,10 +7,10 @@ from .models import *
 # Extendemos el UserCreationForm que viene por defecto
 # Le agregamos los fields extra de Client
 class ClientRegisterForm(UserCreationForm):
-    email = forms.EmailField(required=True)
+    email = forms.EmailField(required=True) 
     birth_date = forms.DateField(required=True)
 
-    class Meta:
+    class Meta:         #Son los datos que le piden al usuario para crear su cliente en KISA
         model = User
         fields = [
             'username',
@@ -32,9 +32,9 @@ class ClientRegisterForm(UserCreationForm):
         )
         client.save()
         return client
+# Si cumple los requisitos se guarda
 
-
-class PaymentMethodForm(forms.ModelForm):
+class PaymentMethodForm(forms.ModelForm): # Se crea la clase de forma de pago
     class Meta:
         model = PaymentMethod
         fields = [
@@ -44,11 +44,11 @@ class PaymentMethodForm(forms.ModelForm):
             'postal_code'
         ]
 
-    def clean(self):
+    def clean(self):# se limpian los datos
         cleaned_data = super().clean()
 
         if len(cleaned_data['cv2']) != 3:
-            self.add_error('cv2', 'This field is required')
+            self.add_error('cv2', 'This field is required')# Se comenta que hay datos obligatorios
 
 class DistrictForm(forms.ModelForm):
 
