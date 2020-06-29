@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import ClientRegisterForm,DistrictForm
+from .forms import ClientRegisterForm
 from apps.main.models import *
 
 
@@ -11,11 +11,8 @@ def index(request):
     return render(request,'main/index.html')
 
 def ticket_payment(request):
-    district = District.objects.values_list('name', flat=True) #Con 'flat' retorna el set limpio, sin comillas ni parentesis
-    route= BusRoute.objects.values_list('title',flat=True)
+    route= BusRoute.objects.values_list('title',flat=True) #Con 'flat' retorna el set limpio, sin comillas ni parentesis
     ticket =BusRoute.objects.values_list('ticket_price',flat=True)
-    formDis= DistrictForm()
-    formDis.fields['province'].choices=((1,'San Jose'),)
     client = request.user.client
 
     if request.method == 'POST':
@@ -25,8 +22,6 @@ def ticket_payment(request):
         client.save()  
 
     context={
-        'district' : district,
-        'formDis' : formDis,
         'route' : route,
         'ticket' : ticket
     }

@@ -50,10 +50,3 @@ class PaymentMethodForm(forms.ModelForm):
         if len(cleaned_data['cv2']) != 3:
             self.add_error('cv2', 'This field is required')
 
-class DistrictForm(forms.ModelForm):
-
-    class Meta:
-        model = District
-        fields = ['province']
-   
-   
