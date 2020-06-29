@@ -14,7 +14,6 @@ def ticket_payment(request):
     route= BusRoute.objects.values_list('title',flat=True) #Con 'flat' retorna el set limpio, sin comillas ni parentesis
     ticket =BusRoute.objects.values_list('ticket_price',flat=True)
     client = request.user.client
-
     if request.method == 'POST':
         selected_value_route = request.POST['busroute']  
         route_selected_price = BusRoute.objects.get(title=selected_value_route)
@@ -25,7 +24,7 @@ def ticket_payment(request):
         'route' : route,
         'ticket' : ticket
     }
-    return render(request,'main/index.html',context)
+    return render(request,'main/ticket_payment.html',context)
 
 def register(request):
     if request.method == 'POST':

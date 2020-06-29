@@ -1,19 +1,5 @@
 {% extends "./base.html" %} {% block content %}
 
-<form class="text-center mb-5" method="POST">
-    {% csrf_token %}
-
-    <div class="form-group">
-        <label>Route:</label>
-        <select name="busroute">
-        {% for route in route %}
-            {% for ticket in ticket %}
-                <option value="{{route}}">{{route}}, {{ticket}} colones</option>
-                {%endfor%}
-        {%endfor%}
-        </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Pay</button>
-</form>
+<h1>Pago Digital para Buses</h1>
 
 {% endblock %}
