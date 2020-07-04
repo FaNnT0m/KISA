@@ -6,7 +6,7 @@ from django.utils import timezone
 # TODO: Seria bueno que dividiesemos las cosas en apps en el futuro
 
 
-PROVINCE_CHOICES = (
+PROVINCE_CHOICES = (# requisito, las provincias
     (1, "San Jose"),
     (2, "Alajuela"),
     (3, "Cartago"),
@@ -28,7 +28,7 @@ class BaseModelManager(models.Manager):
         """
         return self.exclude(deleted_date__isnull=False)
 
-
+## se crean las tablas de base de datos
 class BaseModel(models.Model):
     created_date = models.DateTimeField()
     updated_date = models.DateTimeField()
@@ -61,7 +61,7 @@ class Person(BaseModel):
 class Client(Person):
     balance = models.FloatField(default=0.0)
 
-    def add_balance(self, amount, payment_method=None): 
+    def add_balance(self, amount, payment_method=None): # cuenta con ela aumento y la opcion de abonar/pagar
         self.balance += amount
 
     def transfer_balance(self, amount, destinary):
@@ -111,5 +111,6 @@ class BusRouteTicket(BaseModel):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)    
     bus_route = models.ForeignKey(BusRoute, on_delete=models.CASCADE)
     amount_payed = models.FloatField()
+    date_payed = models.DateTimeField(auto_now_add=True)
 
 
