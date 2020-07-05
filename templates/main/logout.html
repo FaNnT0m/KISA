@@ -2,12 +2,14 @@
 
 {% extends "./base.html" %}
 {% block content %}
+<div class="content-section">
     <h2>Has cerrado tu sesion<h2>
     <div class="content-section">
         <div class="border-top pt-3">
             <small class="text-muted">
-                <a class="ml-2" href="{% url 'login' %}">Ingresar denuevo</a>
+                <a class="ml-2" href="{% url 'login' %}">Ingresar de nuevo</a>
             </small>
         </div>
     </div>
+</div>
 {% endblock content %}
