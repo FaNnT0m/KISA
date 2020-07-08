@@ -1,0 +1,32 @@
+{% extends "./base.html" %} {% block content %}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Fecha</th>
+            <th scope="col">Ruta</th>
+            <th scope="col">Gasto</th>
+        </tr>
+    </thead>
+    <tbody>
+        {%for values in values%}
+        <tr>
+            <td>
+                {{values.created_date}}
+            </td>
+            <td>
+                {{values.bus_route__title}}
+
+            </td>
+            <td>
+                {{values.amount_payed}}
+
+            </td>
+
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>
+
+
+{% endblock %}

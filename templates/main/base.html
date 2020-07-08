@@ -12,44 +12,48 @@
     <title>KISA</title>
 </head>
 <!--Es el menu que tiene el cliente cuando ingresa a  la pagina-->
+
 <body>
- 
+
     <div class="container-fluid h-100">
         <div class="row h-100">
             <aside class="col-13 col-md-2.5 p-0 navbar-dark bg-dark">
-                <h1 class="bg-info p-4 text-light text-center">KISA</h1> <!--Nombre del proyecto, son 4 opciones-->
+                <h1 class="bg-info p-4 text-light text-center">KISA</h1>
+                <!--Nombre del proyecto, son 4 opciones-->
                 <nav class="navbar navbar-expand flex-md-column flex-row align-items-start">
                     <div class="collapse navbar-collapse">
                         <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between sidebar-nav nav">
-
+                            {% if user.is_authenticated %}
                             <li class="mt-4">
-                                <a class="text-light" href="#">
-                                    <span class="fa fa-money"> <span>Pagar pasaje</span></span> 
+                                <a class="text-light" href="{% url 'ticket_payment' %}">
+                                    <span class="fa fa-money"> <span>Pagar pasaje</span></span>
                                 </a>
                             </li>
                             <hr class="dropdown-divider">
+
                             <li class="mt-4">
-                                <a class="text-light" href="#">
+                                <a class="text-light" href="{% url 'digital_wallet' %}">
                                     <span class=" fa fa-credit-card-alt"> <span>Monedero electronico</span></span>
                                 </a>
                             </li>
                             <hr class="dropdown-divider">
                             <li class="mt-4">
-                                <a class="text-light" href="#">
-                                    <span class="fa fa-book"> <span>Reportes</span></span></span>
+                                <a class="text-light" href="{% url 'reports' %}">
+                                    <span class="fa fa-book"> <span>Reportes</span></span>
+                                    </span>
                                 </a>
                             </li>
-                            <hr class="dropdown-divider">
+                            <hr class="dropdown-divider"> {% endif %}
                             <li class="mt-4">
-                            {% if user.is_authenticated %}
+                                {% if user.is_authenticated %}
                                 <a class="text-light" href="{% url 'logout' %}">
                                     <span class="fa fa-share-square-o"> <span>Cerrar sesion</span></span>
                                 </a>
-                            {% else %}
+                                {% else %}
                                 <a class="text-light" href="{% url 'login' %}">
                                     <span class="fa fa-share-square-o"> <span>Ingresar</span></span>
                                 </a>
-                            {% endif %}
+                                {% endif %}
                             </li>
                             <hr class="dropdown-divider">
                         </ul>
@@ -61,8 +65,7 @@
                 <div class="alert alert-{{ message.tags }}">
                     {{ message }}
                 </div>
-                {% endfor %} {% endif %}
-                {% block content %} {% endblock %}
+                {% endfor %} {% endif %} {% block content %} {% endblock %}
             </div>
         </div>
     </div>
