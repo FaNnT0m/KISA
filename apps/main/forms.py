@@ -7,13 +7,17 @@ from .models import *
 # Extendemos el UserCreationForm que viene por defecto
 # Le agregamos los fields extra de Client
 class ClientRegisterForm(UserCreationForm):
+    identification = forms.CharField(max_length=10, required=True)
     email = forms.EmailField(required=True) 
     birth_date = forms.DateField(required=True)
 
-    class Meta:         #Son los datos que le piden al usuario para crear su cliente en KISA
+    class Meta:
         model = User
         fields = [
             'username',
+            'first_name',
+            'last_name',
+            'identification',
             'email',
             'birth_date',
             'password1',
@@ -32,7 +36,7 @@ class ClientRegisterForm(UserCreationForm):
         )
         client.save()
         return client
-# Si cumple los requisitos se guarda
+
 
 class PaymentMethodForm(forms.ModelForm): # Se crea la clase de forma de pago
     class Meta:

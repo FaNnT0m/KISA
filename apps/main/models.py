@@ -69,7 +69,7 @@ class Person(BaseModel):
 
 
 class Client(Person):
-    balance = models.FloatField(default=0.0)
+    balance = models.IntegerField(default=0)
 
     def add_balance(self, amount, payment_method=None):
         self.balance += amount
@@ -92,6 +92,7 @@ class PaymentMethod(BaseModel):
     def __str__(self):
         return "{}".format(
             self.card_number)
+
 
 class District(BaseModel):
     name = models.CharField(max_length = 80)
