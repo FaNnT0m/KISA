@@ -28,6 +28,7 @@ class BaseModelManager(models.Manager):
         """
         return self.exclude(deleted_date__isnull=False)
 
+
 ## se crean las tablas de base de datos
 class BaseModel(models.Model):
     created_date = models.DateTimeField()
@@ -57,6 +58,15 @@ class Person(BaseModel):
     class Meta:
         abstract=True
 
+    def save(self, *args, **kwargs):
+        """
+        Se llena el last_login automaticamente
+        """
+        if not self.id:
+            self.last_login_date = timezone.now()
+
+        return super(Person, self).save(*args, **kwargs)
+
 
 class Client(Person):
     balance = models.FloatField(default=0.0)
@@ -69,17 +79,8 @@ class Client(Person):
         destinary.add_balance(destinary)
 
     def charge_ticket(self, route):
-       self.balance -= route.ticket_price
+        self.balance -= route.ticket_price
 
-
-    def save(self, *args, **kwargs):
-        """
-        Se llena el last_login automaticamente
-        """
-        if not self.id:
-            self.last_login_date = timezone.now()
-
-        return super(Client, self).save(*args, **kwargs)
 
 class PaymentMethod(BaseModel):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)    
@@ -89,28 +90,23 @@ class PaymentMethod(BaseModel):
     postal_code = models.IntegerField()
 
 
-class Driver(Person):
-    pass
-
-
 class District(BaseModel):
     name = models.CharField(max_length = 80)
-    province = models.IntegerField(choices=PROVINCE_CHOICES,default=1) #adds the choice on html
+    province = models.IntegerField(choices=PROVINCE_CHOICES)
 
 
 class BusRoute(BaseModel):
     title = models.CharField(max_length = 80)
-    driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
     ticket_price = models.FloatField()
     ctp_code = models.IntegerField()
-    # TODO: Cambiar a models o integer choices
     district = models.ForeignKey(District, on_delete=models.CASCADE)  
 
 
+class Driver(Person):
+    bus_route = models.ForeignKey(BusRoute, on_delete=models.CASCADE)
+
+
 class BusRouteTicket(BaseModel):
-    client = models.ForeignKey(Client, on_delete=models.CASCADE)    
+    client = models.ForeignKey(Client, on_delete=models.CASCADE)
     bus_route = models.ForeignKey(BusRoute, on_delete=models.CASCADE)
     amount_payed = models.FloatField()
-   
-
-
