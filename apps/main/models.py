@@ -6,7 +6,7 @@ from django.utils import timezone
 # TODO: Seria bueno que dividiesemos las cosas en apps en el futuro
 
 
-PROVINCE_CHOICES = (# requisito, las provincias
+PROVINCE_CHOICES = (
     (1, "San Jose"),
     (2, "Alajuela"),
     (3, "Cartago"),
@@ -22,14 +22,15 @@ PROVINCE_CHOICES = (# requisito, las provincias
 class BaseModelManager(models.Manager):
     def active(self):
         """
-        Obtener un queryset con los objetos no eliminados
+        Retorna un queryset con los objetos no eliminados
 
         :return: Un Queryset
         """
         return self.exclude(deleted_date__isnull=False)
 
 
-## se crean las tablas de base de datos
+# Modelo base con los campos de auditoria
+# El resto hereda de este
 class BaseModel(models.Model):
     created_date = models.DateTimeField()
     updated_date = models.DateTimeField()
@@ -40,9 +41,9 @@ class BaseModel(models.Model):
     class Meta:
         abstract=True
 
+    # Cada vez que se guarda un modelo, se
+    # actualizan los campos de auditoria
     def save(self, *args, **kwargs):
-        """que se guarda un modelo, se actualizan los campos _date
-        """
         if not self.id:
             self.created_date = timezone.now()
 
@@ -53,19 +54,9 @@ class BaseModel(models.Model):
 class Person(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     birth_date = models.DateField()
-    last_login_date = models.DateField()
 
     class Meta:
         abstract=True
-
-    def save(self, *args, **kwargs):
-        """
-        Se llena el last_login automaticamente
-        """
-        if not self.id:
-            self.last_login_date = timezone.now()
-
-        return super(Person, self).save(*args, **kwargs)
 
 
 class Client(Person):
@@ -97,7 +88,7 @@ class District(BaseModel):
 
 class BusRoute(BaseModel):
     title = models.CharField(max_length = 80)
-    ticket_price = models.FloatField()
+    ticket_price = models.IntegerField()
     ctp_code = models.IntegerField()
     district = models.ForeignKey(District, on_delete=models.CASCADE)  
 
@@ -108,5 +99,5 @@ class Driver(Person):
 
 class BusRouteTicket(BaseModel):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
-    bus_route = models.ForeignKey(BusRoute, on_delete=models.CASCADE)
-    amount_payed = models.FloatField()
+    driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
+    amount_payed = models.IntegerField()
