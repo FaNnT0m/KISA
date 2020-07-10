@@ -51,18 +51,27 @@ class BaseModel(models.Model):
         return super(BaseModel, self).save(*args, **kwargs)
 
 
+# Extendemos el modelo de User de django
+# para agregar 
 class Person(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    identification = models.CharField(max_length=80)
     birth_date = models.DateField()
 
     class Meta:
         abstract=True
 
+    def __str__(self):
+        return "{} {} ({})".format(
+            self.user.first_name,
+            self.user.last_name,
+            self.identification)
+
 
 class Client(Person):
     balance = models.FloatField(default=0.0)
 
-    def add_balance(self, amount, payment_method=None): # cuenta con ela aumento y la opcion de abonar/pagar
+    def add_balance(self, amount, payment_method=None):
         self.balance += amount
 
     def transfer_balance(self, amount, destinary):
@@ -80,10 +89,18 @@ class PaymentMethod(BaseModel):
     cv2 = models.IntegerField()
     postal_code = models.IntegerField()
 
+    def __str__(self):
+        return "{}".format(
+            self.card_number)
 
 class District(BaseModel):
     name = models.CharField(max_length = 80)
     province = models.IntegerField(choices=PROVINCE_CHOICES)
+
+    def __str__(self):
+        return "{}, {}".format(
+            self.name,
+            self.province)
 
 
 class BusRoute(BaseModel):
@@ -92,12 +109,29 @@ class BusRoute(BaseModel):
     ctp_code = models.IntegerField()
     district = models.ForeignKey(District, on_delete=models.CASCADE)  
 
+    def __str__(self):
+        return "{} - {}".format(
+            self.ctp_code,
+            self.title)
+
 
 class Driver(Person):
     bus_route = models.ForeignKey(BusRoute, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return "{} {} ({})".format(
+            self.user.first_name,
+            self.user.last_name,
+            self.bus_route)
 
 
 class BusRouteTicket(BaseModel):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
     amount_payed = models.IntegerField()
+
+    def __str__(self):
+        return "{} - {} en ruta {}".format(
+            self.created_date,
+            self.client.identification,
+            self.driver.bus_route)

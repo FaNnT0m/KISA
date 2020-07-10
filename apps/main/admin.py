@@ -7,24 +7,37 @@ from .models import (
 )
 
 class ClientAdmin(admin.ModelAdmin):
-    fields = ('user', 'birth_date')
+    fields = (
+        'user',
+        'identification',
+        'birth_date')
 
 admin.site.register(Client, ClientAdmin)
 
 
 class DistrictAdmin(admin.ModelAdmin):
-    fields = ('name', 'province')
+    fields = (
+        'name',
+        'province')
 
 admin.site.register(District, DistrictAdmin)
 
 
 class BusRouteAdmin(admin.ModelAdmin):
-    fields = ('title', 'ticket_price', 'ctp_code', 'district')
+    fields = (
+        'title',
+        'ticket_price',
+        'ctp_code',
+        'district')
 
 admin.site.register(BusRoute, BusRouteAdmin)
 
 
 class DriverAdmin(admin.ModelAdmin):
-    fields = ('user', 'birth_date', 'bus_route')
+    fields = (
+        'user',
+        'identification',
+        'birth_date',
+        'bus_route')
 
 admin.site.register(Driver, DriverAdmin)
