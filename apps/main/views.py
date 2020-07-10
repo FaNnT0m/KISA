@@ -1,62 +1,78 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import ClientRegisterForm,DistrictForm
+from .forms import ClientRegisterForm
 from apps.main.models import *
 
 # Son las vistas
+
+
 def base(request):
-    return render(request,'main/base.html')
+    return render(request, 'main/base.html')
+
 
 def index(request):
-    return render(request,'main/index.html')
+    return render(request, 'main/index.html')
+
 
 def ticket_payment(request):
-    district = District.objects.values_list('name', flat=True) #Con 'flat' retorna el set limpio, sin comillas ni parentesis
-    route= BusRoute.objects.values_list('title',flat=True)
-    ticket =BusRoute.objects.values_list('ticket_price',flat=True)
-    formDis= DistrictForm()
-    formDis.fields['province'].choices=((1,'San Jose'),)
+    # Con 'flat' retorna el set limpio, sin comillas ni parentesis
+    values = BusRoute.objects.values('title','ticket_price')
     client = request.user.client
 
-    if request.method == 'POST': # Se hace la consulta si es un Post sino
-        selected_value_route = request.POST['busroute']  
+    if request.method == 'POST':
+        selected_value_route = request.POST['busroute']
         route_selected_price = BusRoute.objects.get(title=selected_value_route)
-        client.charge_ticket(route_selected_price)#
-        client.save()  # se guarda el cliente
+        client.charge_ticket(route_selected_price)
+        report = BusRouteTicket(client=client, bus_route=route_selected_price,
+                                amount_payed=route_selected_price.ticket_price)
+        client.save()
+        report.save()
 
-    context={
-        'district' : district,
-        'formDis' : formDis,
-        'route' : route,
-        'ticket' : ticket
+    context = {
+        'values': values
     }
-    return render(request,'main/index.html',context)# Si no lo es, se renderiza
+    return render(request, 'main/ticket_payment.html', context)
 
-def register(request):# hace una solicitud de registro de nombre.
-    if request.method == 'POST': # si se  cumple el motodo POST envie los datos 
+
+def register(request):  # hace una solicitud de registro de nombre.
+    if request.method == 'POST':  # si se  cumple el motodo POST envie los datos
         form = ClientRegisterForm(request.POST)
-        if form.is_valid():# Si este es valido y cumple con los parametros
-            form.save()# Aqui se guarda
+        if form.is_valid():  # Si este es valido y cumple con los parametros
+            form.save()  # Aqui se guarda
             username = form.cleaned_data.get('username')
-            messages.success(request, f'Account created for {username}!')# Se crea la cuenta
+            # Se crea la cuenta
+            messages.success(request, f'Account created for {username}!')
             return redirect('index')
 
     else:
-        form = ClientRegisterForm() 
+        form = ClientRegisterForm()
 
-    return render(request, 'main/register.html', {'form': form})# Sino no se cumple, se redenriza
+    # Sino no se cumple, se redenriza
+    return render(request, 'main/register.html', {'form': form})
 
-def digital_wallet(request):#muestra el #hace la solicitud de digital_wallet
-    client = request.user.client # hace la solicitud para dar la respuesta 
-    if request.method == 'POST':  # si se cumple el motodo POST envie los datos 
-        balance_to_add = float(request.POST['balance_to_add'])# Agrega el balance de la cuenta y lo lleva hasta cuenta # Lo conviente de String a Float
-        client.add_balance(balance_to_add)# agregua el monto al balance
-        client.save()# guarde el monto
+
+def digital_wallet(request):  # muestra el #hace la solicitud de digital_wallet
+    client = request.user.client  # hace la solicitud para dar la respuesta
+    if request.method == 'POST':  # si se cumple el motodo POST envie los datos
+        # Agrega el balance de la cuenta y lo lleva hasta cuenta # Lo conviente de String a Float
+        balance_to_add = float(request.POST['balance_to_add'])
+        client.add_balance(balance_to_add)  # agregua el monto al balance
+        client.save()  # guarde el monto
 
     context = {
-        'client' : client# se envia el dinero al cliente
+        'client': client  # se envia el dinero al cliente
     }
-    return render(request,'main/digital_wallet.html', context)
-    
+    return render(request, 'main/digital_wallet.html', context)
 
 
+def reports(request):
+    client = request.user.client
+    values = BusRouteTicket.objects.all().values(
+        'created_date', 'amount_payed','bus_route__title').filter(client_id=client.id)
+
+    context = {
+        'client': client,
+        'values': values
+
+    }
+    return render(request, 'main/reports.html', context)
