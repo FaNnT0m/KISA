@@ -111,6 +111,6 @@ class BusRouteTicket(BaseModel):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)    
     bus_route = models.ForeignKey(BusRoute, on_delete=models.CASCADE)
     amount_payed = models.FloatField()
-    date_payed = models.DateTimeField(auto_now_add=True)
+   
 
 

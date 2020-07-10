@@ -5,10 +5,8 @@
     <div class="form-group">
         <label>Route:</label>
         <select name="busroute">
-            {% for route in route %}
-                {% for ticket in ticket %}
-                <option value="{{route}}">{{route}}, {{ticket}} colones</option>
-                {%endfor%}
+            {% for values in values %}
+                <option value="{{values.title}}">{{values.title}}, {{values.ticket_price}} colones</option>
             {%endfor%}
         </select>
     </div>
