@@ -38,9 +38,8 @@ def register(request):
     if request.method == 'POST':
         form = ClientRegisterForm(request.POST)
         if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Account created for {username}!')
+            client = form.save()
+            messages.success(request, f'Account created for {client.user.username}!')
             return redirect('index')
 
     else:

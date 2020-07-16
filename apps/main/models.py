@@ -1,20 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-
-
-# TODO: Seria bueno que dividiesemos las cosas en apps en el futuro
-
-
-PROVINCE_CHOICES = (
-    (1, "San Jose"),
-    (2, "Alajuela"),
-    (3, "Cartago"),
-    (4, "Heredia"),
-    (5, "Guanacaste"),
-    (6, "Puntarenas"),            
-    (7, "Limon"),
-)
+from data import *
 
 
 # Creamos un model manager custom para el base model
@@ -71,6 +58,10 @@ class Person(BaseModel):
 class Client(Person):
     balance = models.IntegerField(default=0)
 
+    def save(self, *args, **kwargs):
+        self.user.groups.add(CLIENT_GROUP)
+        return super(Client, self).save(*args, **kwargs)
+
     def add_balance(self, amount, payment_method=None):
         self.balance += amount
 
@@ -118,6 +109,10 @@ class BusRoute(BaseModel):
 
 class Driver(Person):
     bus_route = models.ForeignKey(BusRoute, on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        self.user.groups.add(DRIVER_GROUP)
+        return super(Driver, self).save(*args, **kwargs)
 
     def __str__(self):
         return "{} {} ({})".format(
