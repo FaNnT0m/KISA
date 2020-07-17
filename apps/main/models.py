@@ -38,26 +38,32 @@ class BaseModel(models.Model):
         return super(BaseModel, self).save(*args, **kwargs)
 
 
-# Extendemos el modelo de User de django
-class KisaUser(User):
-    class Meta:
-        proxy = True
+# Agregamos algunos metodos el modelo de User de django
+def make_client(self):
+    client_group = Group.objects.get(name=CLIENT_GROUP_NAME) 
+    self.groups.add(client_group)
+    self.save()
 
-    def make_client(self):
-        client_group = Group.objects.get(name=CLIENT_GROUP_NAME) 
-        self.groups.add(client_group)
+User.add_to_class("make_client", make_client)
 
-    def make_driver(self):
-        driver_group = Group.objects.get(name=DRIVER_GROUP_NAME) 
-        self.groups.add(driver_group)
+def make_driver(self):
+    driver_group = Group.objects.get(name=DRIVER_GROUP_NAME) 
+    self.groups.add(driver_group)
+    self.save()
 
-    @property
-    def is_client(self):
-        return self.groups.filter(name=CLIENT_GROUP_NAME).exists()
+User.add_to_class("make_driver", make_driver)
 
-    @property
-    def is_driver(self):
-        return self.groups.filter(name=DRIVER_GROUP_NAME).exists()
+@property
+def is_client(self):
+    return self.groups.filter(name=CLIENT_GROUP_NAME).exists()
+
+User.add_to_class("is_client", is_client)
+
+@property
+def is_driver(self):
+    return self.groups.filter(name=DRIVER_GROUP_NAME).exists()
+
+User.add_to_class("is_driver", is_driver)
 
 
 # Heredamos del modelo de User para agregar datos
