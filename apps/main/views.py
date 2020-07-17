@@ -40,7 +40,7 @@ def register(request):
         if form.is_valid():
             client = form.save()
             messages.success(request, f'Account created for {client.user.username}!')
-            return redirect('index')
+            return redirect('login')
 
     else:
         form = ClientRegisterForm()
