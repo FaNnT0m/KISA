@@ -7,7 +7,7 @@ from .models import *
 # Extendemos el UserCreationForm que viene por defecto
 # Le agregamos los fields extra de Client
 class ClientRegisterForm(UserCreationForm):
-    identification = forms.CharField(max_length=10, required=True)
+    identification = forms.CharField(max_length=9, required=True)
     email = forms.EmailField(required=True) 
     birth_date = forms.DateField(required=True)
 
@@ -36,6 +36,7 @@ class ClientRegisterForm(UserCreationForm):
         user = super(ClientRegisterForm, self).save(commit=True)
         client = Client(
             user=user,
+            identification=self.cleaned_data['identification'],
             birth_date=self.cleaned_data['birth_date'],
         )
         client.save()
