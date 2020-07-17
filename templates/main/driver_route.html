@@ -1,0 +1,63 @@
+{% extends "./base.html" %} {% block content %}
+
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#chargeClientModal">
+    Cobrarle a cliente
+</button>
+
+<div class="modal fade" id="chargeClientModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Cobrarle a cliente</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            Cobre a un cliente para su uso del servicio
+            <form method="POST" action="{%url 'driver_route' %}">
+                {% csrf_token %}
+                <label for="client_identification">Identificacion del cliente</label><br>
+                <input type="text" id="client_identification" name="client_identification" value=""><br>
+                <input type="submit" value="Cobrar">
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Fecha</th>
+            <th scope="col">Cliente</th>
+            <th scope="col">Gasto</th>
+            <th scope="col">Pago exitoso</th>
+        </tr>
+    </thead>
+    {% comment %} TODO: Filtrar por dia {% endcomment %}
+    <tbody>
+        {% for ticket in tickets %}
+        <tr>
+            <td>
+                {{ticket.created_date}}
+            </td>
+            <td>
+                {{ticket.client.identification}}
+            </td>
+            <td>
+                {{ticket.ticket_price}}
+            </td>
+            <td>
+                {{ticket.payment_successful}}
+            </td>
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>
+
+
+{% endblock %}

@@ -98,8 +98,21 @@ class Client(Person):
         self.balance -+ amount
         destinary.add_balance(destinary)
 
-    def charge_ticket(self, route):
-        self.balance -= route.ticket_price
+    def charge_ticket(self, driver):
+        price = driver.bus_route.ticket_price
+        ticket = BusRouteTicket(
+            client=self,
+            driver=driver,
+            ticket_price=price,
+            payment_successful=False,
+        )
+        if self.balance >= price:
+            self.balance -= price
+            self.save()
+            ticket.payment_successful = True
+
+        ticket.save()
+        return ticket.payment_successful
 
 
 class PaymentMethod(BaseModel):
@@ -129,7 +142,6 @@ class BusRoute(BaseModel):
     ticket_price = models.IntegerField()
     ctp_code = models.IntegerField()
     district = models.ForeignKey(District, on_delete=models.CASCADE)
-    payment_successful = models.BooleanField()
 
     def __str__(self):
         return "{} - {}".format(
@@ -156,7 +168,8 @@ class Driver(Person):
 class BusRouteTicket(BaseModel):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
-    amount_payed = models.IntegerField()
+    ticket_price = models.IntegerField()
+    payment_successful = models.BooleanField()
 
     def __str__(self):
         return "{} - {} en ruta {}".format(
