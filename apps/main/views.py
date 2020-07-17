@@ -10,7 +10,7 @@ def index(request):
     return render(request, 'main/index.html')
 
 
-@group_required(DRIVER_GROUP)
+@group_required(DRIVER_GROUP_NAME)
 def ticket_payment(request):
     # Con 'flat' retorna el set limpio, sin comillas ni parentesis
     values = BusRoute.objects.values('title','ticket_price')
@@ -46,7 +46,7 @@ def register(request):
     return render(request, 'main/register.html', {'form': form})
 
 
-@group_required(CLIENT_GROUP)
+@group_required(CLIENT_GROUP_NAME)
 def digital_wallet(request):
     client = request.user.client
     if request.method == 'POST':
@@ -60,7 +60,7 @@ def digital_wallet(request):
     return render(request, 'main/digital_wallet.html', context)
 
 
-@group_required(CLIENT_GROUP)
+@group_required(CLIENT_GROUP_NAME)
 def client_reports(request):
     client = request.user.client
     values = BusRouteTicket.objects.all().values(

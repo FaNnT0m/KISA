@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.utils import timezone
 from .data import *
 
@@ -43,13 +43,21 @@ class KisaUser(User):
     class Meta:
         proxy = True
 
+    def make_client(self):
+        client_group = Group.objects.get(name=CLIENT_GROUP_NAME) 
+        self.groups.add(client_group)
+
+    def make_driver(self):
+        driver_group = Group.objects.get(name=DRIVER_GROUP_NAME) 
+        self.groups.add(driver_group)
+
     @property
     def is_client(self):
-        return self.groups.filter(name=CLIENT_GROUP).exists()
+        return self.groups.filter(name=CLIENT_GROUP_NAME).exists()
 
     @property
     def is_driver(self):
-        return self.groups.filter(name=DRIVER_GROUP).exists()
+        return self.groups.filter(name=DRIVER_GROUP_NAME).exists()
 
 
 # Heredamos del modelo de User para agregar datos
@@ -72,7 +80,9 @@ class Client(Person):
     balance = models.IntegerField(default=0)
 
     def save(self, *args, **kwargs):
-        self.user.groups.add(CLIENT_GROUP)
+        if not self.id:
+            self.user.make_client()
+
         return super(Client, self).save(*args, **kwargs)
 
     def add_balance(self, amount, payment_method=None):
@@ -125,7 +135,9 @@ class Driver(Person):
     bus_route = models.ForeignKey(BusRoute, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
-        self.user.groups.add(DRIVER_GROUP)
+        if not self.id:
+            self.user.make_driver()
+
         return super(Driver, self).save(*args, **kwargs)
 
     def __str__(self):

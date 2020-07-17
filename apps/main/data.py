@@ -10,6 +10,6 @@ PROVINCE_CHOICES = (
     (7, "Limon"),
 )
 
-CLIENT_GROUP = 'client'
+CLIENT_GROUP_NAME = 'client'
 
-DRIVER_GROUP = 'driver'
+DRIVER_GROUP_NAME = 'driver'
