@@ -24,7 +24,7 @@
                 <nav class="navbar navbar-expand flex-md-column flex-row align-items-start">
                     <div class="collapse navbar-collapse">
                         <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between sidebar-nav nav">
-                            {% if user.is_authenticated %}
+                            {% if user.is_authenticated and user.is_client %}
                             <li class="mt-4">
                                 <a class="text-light" href="{% url 'ticket_payment' %}">
                                     <span class="fa fa-money"> <span>Pagar pasaje</span></span>
@@ -39,7 +39,7 @@
                             </li>
                             <hr class="dropdown-divider">
                             <li class="mt-4">
-                                <a class="text-light" href="{% url 'reports' %}">
+                                <a class="text-light" href="{% url 'client_reports' %}">
                                     <span class="fa fa-book"> <span>Reportes</span></span>
                                     </span>
                                 </a>

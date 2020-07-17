@@ -13,7 +13,7 @@ class ClientRegisterForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = [
+        fields = (
             'username',
             'first_name',
             'last_name',
@@ -22,7 +22,11 @@ class ClientRegisterForm(UserCreationForm):
             'birth_date',
             'password1',
             'password2'
-        ]
+        )
+
+    def validate_identification(self, value):
+        if len(value) != 9 or not value.isnumeric():
+            raise exceptions.ValidationError(_('Identification must have 9 numbers'))
 
     # Sobreescribimos el save para crear primero el User y luego el Client
     def save(self, commit=True):
@@ -41,12 +45,12 @@ class ClientRegisterForm(UserCreationForm):
 class PaymentMethodForm(forms.ModelForm): # Se crea la clase de forma de pago
     class Meta:
         model = PaymentMethod
-        fields = [
+        fields = (
             'card_number',
             'card_holder',
             'cv2',
             'postal_code'
-        ]
+        )
 
     def clean(self):# se limpian los datos
         cleaned_data = super().clean()

@@ -39,7 +39,20 @@ class BaseModel(models.Model):
 
 
 # Extendemos el modelo de User de django
-# para agregar 
+class KisaUser(User):
+    class Meta:
+        proxy = True
+
+    @property
+    def is_client(self):
+        return self.groups.filter(name=CLIENT_GROUP).exists()
+
+    @property
+    def is_driver(self):
+        return self.groups.filter(name=DRIVER_GROUP).exists()
+
+
+# Heredamos del modelo de User para agregar datos
 class Person(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     identification = models.CharField(max_length=80)
@@ -99,7 +112,8 @@ class BusRoute(BaseModel):
     title = models.CharField(max_length = 80)
     ticket_price = models.IntegerField()
     ctp_code = models.IntegerField()
-    district = models.ForeignKey(District, on_delete=models.CASCADE)  
+    district = models.ForeignKey(District, on_delete=models.CASCADE)
+    payment_successful = models.BooleanField()
 
     def __str__(self):
         return "{} - {}".format(

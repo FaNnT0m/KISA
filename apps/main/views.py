@@ -1,19 +1,16 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import ClientRegisterForm
+from .decorators import *
+from .data import *
 from apps.main.models import *
-
-# Son las vistas
-
-
-def base(request):
-    return render(request, 'main/base.html')
 
 
 def index(request):
     return render(request, 'main/index.html')
 
 
+@group_required(DRIVER_GROUP)
 def ticket_payment(request):
     # Con 'flat' retorna el set limpio, sin comillas ni parentesis
     values = BusRoute.objects.values('title','ticket_price')
@@ -34,6 +31,7 @@ def ticket_payment(request):
     return render(request, 'main/ticket_payment.html', context)
 
 
+@anonymous_required
 def register(request):
     if request.method == 'POST':
         form = ClientRegisterForm(request.POST)
@@ -48,6 +46,7 @@ def register(request):
     return render(request, 'main/register.html', {'form': form})
 
 
+@group_required(CLIENT_GROUP)
 def digital_wallet(request):
     client = request.user.client
     if request.method == 'POST':
@@ -61,7 +60,8 @@ def digital_wallet(request):
     return render(request, 'main/digital_wallet.html', context)
 
 
-def reports(request):
+@group_required(CLIENT_GROUP)
+def client_reports(request):
     client = request.user.client
     values = BusRouteTicket.objects.all().values(
         'created_date', 'amount_payed','driver__bus_route__title').filter(client_id=client.id)
@@ -71,4 +71,4 @@ def reports(request):
         'values': values
 
     }
-    return render(request, 'main/reports.html', context)
+    return render(request, 'main/client_reports.html', context)
