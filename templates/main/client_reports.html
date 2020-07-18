@@ -16,10 +16,10 @@
                 {{ticket.created_date}}
             </td>
             <td>
-                {{ticket.bus_route__title}}
+                {{ticket.driver.bus_route.title}}
             </td>
             <td>
-                {{ticket.amount_payed}}
+                {{ticket.ticket_price}}
             </td>
         </tr>
         {%endfor%}

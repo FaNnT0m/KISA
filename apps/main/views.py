@@ -64,7 +64,7 @@ def digital_wallet(request):
 def client_reports(request):
     client = request.user.client
     #TODO: filtrar por mes
-    tickets = BusRouteTicket.objects.all().filter(client_id=client.id)
+    tickets = BusRouteTicket.objects.all().filter(client_id=client.id, payment_successful=True)
 
     context = {
         'client': client,
