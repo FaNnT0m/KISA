@@ -1,20 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.utils import timezone
-
-
-# TODO: Seria bueno que dividiesemos las cosas en apps en el futuro
-
-
-PROVINCE_CHOICES = (
-    (1, "San Jose"),
-    (2, "Alajuela"),
-    (3, "Cartago"),
-    (4, "Heredia"),
-    (5, "Guanacaste"),
-    (6, "Puntarenas"),            
-    (7, "Limon"),
-)
+from .data import *
 
 
 # Creamos un model manager custom para el base model
@@ -51,8 +38,35 @@ class BaseModel(models.Model):
         return super(BaseModel, self).save(*args, **kwargs)
 
 
-# Extendemos el modelo de User de django
-# para agregar 
+# Agregamos algunos metodos el modelo de User de django
+def make_client(self):
+    client_group = Group.objects.get(name=CLIENT_GROUP_NAME) 
+    self.groups.add(client_group)
+    self.save()
+
+User.add_to_class("make_client", make_client)
+
+def make_driver(self):
+    driver_group = Group.objects.get(name=DRIVER_GROUP_NAME) 
+    self.groups.add(driver_group)
+    self.save()
+
+User.add_to_class("make_driver", make_driver)
+
+@property
+def is_client(self):
+    return self.groups.filter(name=CLIENT_GROUP_NAME).exists()
+
+User.add_to_class("is_client", is_client)
+
+@property
+def is_driver(self):
+    return self.groups.filter(name=DRIVER_GROUP_NAME).exists()
+
+User.add_to_class("is_driver", is_driver)
+
+
+# Heredamos del modelo de User para agregar datos
 class Person(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     identification = models.CharField(max_length=80)
@@ -71,6 +85,12 @@ class Person(BaseModel):
 class Client(Person):
     balance = models.IntegerField(default=0)
 
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.user.make_client()
+
+        return super(Client, self).save(*args, **kwargs)
+
     def add_balance(self, amount, payment_method=None):
         self.balance += amount
 
@@ -78,8 +98,21 @@ class Client(Person):
         self.balance -+ amount
         destinary.add_balance(destinary)
 
-    def charge_ticket(self, route):
-        self.balance -= route.ticket_price
+    def charge_ticket(self, driver):
+        price = driver.bus_route.ticket_price
+        ticket = BusRouteTicket(
+            client=self,
+            driver=driver,
+            ticket_price=price,
+            payment_successful=False,
+        )
+        if self.balance >= price:
+            self.balance -= price
+            self.save()
+            ticket.payment_successful = True
+
+        ticket.save()
+        return ticket.payment_successful
 
 
 class PaymentMethod(BaseModel):
@@ -108,7 +141,7 @@ class BusRoute(BaseModel):
     title = models.CharField(max_length = 80)
     ticket_price = models.IntegerField()
     ctp_code = models.IntegerField()
-    district = models.ForeignKey(District, on_delete=models.CASCADE)  
+    district = models.ForeignKey(District, on_delete=models.CASCADE)
 
     def __str__(self):
         return "{} - {}".format(
@@ -118,6 +151,12 @@ class BusRoute(BaseModel):
 
 class Driver(Person):
     bus_route = models.ForeignKey(BusRoute, on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.user.make_driver()
+
+        return super(Driver, self).save(*args, **kwargs)
 
     def __str__(self):
         return "{} {} ({})".format(
@@ -129,7 +168,8 @@ class Driver(Person):
 class BusRouteTicket(BaseModel):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     driver = models.ForeignKey(Driver, on_delete=models.CASCADE)
-    amount_payed = models.IntegerField()
+    ticket_price = models.IntegerField()
+    payment_successful = models.BooleanField()
 
     def __str__(self):
         return "{} - {} en ruta {}".format(

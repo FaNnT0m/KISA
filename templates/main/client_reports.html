@@ -8,21 +8,19 @@
             <th scope="col">Gasto</th>
         </tr>
     </thead>
+    {% comment %} TODO: Filtrar por mes {% endcomment %}
     <tbody>
-        {%for values in values%}
+        {% for ticket in tickets %}
         <tr>
             <td>
-                {{values.created_date}}
+                {{ticket.created_date}}
             </td>
             <td>
-                {{values.bus_route__title}}
-
+                {{ticket.driver.bus_route.title}}
             </td>
             <td>
-                {{values.amount_payed}}
-
+                {{ticket.ticket_price}}
             </td>
-
         </tr>
         {%endfor%}
     </tbody>

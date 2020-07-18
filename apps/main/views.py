@@ -1,19 +1,16 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import ClientRegisterForm
+from .decorators import *
+from .data import *
 from apps.main.models import *
-
-# Son las vistas
-
-
-def base(request):
-    return render(request, 'main/base.html')
 
 
 def index(request):
     return render(request, 'main/index.html')
 
 
+@group_required(DRIVER_GROUP_NAME)
 def ticket_payment(request):
     # Con 'flat' retorna el set limpio, sin comillas ni parentesis
     values = BusRoute.objects.values('title','ticket_price')
@@ -34,14 +31,14 @@ def ticket_payment(request):
     return render(request, 'main/ticket_payment.html', context)
 
 
+@anonymous_required
 def register(request):
     if request.method == 'POST':
         form = ClientRegisterForm(request.POST)
         if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Account created for {username}!')
-            return redirect('index')
+            client = form.save()
+            messages.success(request, f'Account created for {client.user.username}!')
+            return redirect('login')
 
     else:
         form = ClientRegisterForm()
@@ -49,6 +46,7 @@ def register(request):
     return render(request, 'main/register.html', {'form': form})
 
 
+@group_required(CLIENT_GROUP_NAME)
 def digital_wallet(request):
     client = request.user.client
     if request.method == 'POST':
@@ -62,14 +60,37 @@ def digital_wallet(request):
     return render(request, 'main/digital_wallet.html', context)
 
 
-def reports(request):
+@group_required(CLIENT_GROUP_NAME)
+def client_reports(request):
     client = request.user.client
-    values = BusRouteTicket.objects.all().values(
-        'created_date', 'amount_payed','driver__bus_route__title').filter(client_id=client.id)
+    #TODO: filtrar por mes
+    tickets = BusRouteTicket.objects.all().filter(client_id=client.id, payment_successful=True)
 
     context = {
         'client': client,
-        'values': values
-
+        'tickets': list(tickets)
     }
-    return render(request, 'main/reports.html', context)
+    return render(request, 'main/client_reports.html', context)
+
+
+@group_required(DRIVER_GROUP_NAME)
+def driver_route(request):
+    driver = request.user.driver
+    if request.method == 'POST':
+        client_identification = request.POST['client_identification']
+        client = Client.objects.all().filter(identification=client_identification).first()
+        if not client:
+            messages.error(request, f'No client with identification "{client_identification}" found!')
+        else:
+            if client.charge_ticket(driver):
+                messages.success(request, f'Client charged succesfully!')
+            else:
+                messages.error(request, f'Client had insuficient funds!')
+
+    tickets = BusRouteTicket.objects.all().filter(driver_id=driver.id)
+
+    context = {
+        'driver': driver,
+        'tickets': list(tickets)
+    }
+    return render(request, 'main/driver_route.html', context)
