@@ -63,8 +63,10 @@ def digital_wallet(request):
 @group_required(CLIENT_GROUP_NAME)
 def client_reports(request):
     client = request.user.client
-    #TODO: filtrar por mes
-    tickets = BusRouteTicket.objects.all().filter(client_id=client.id, payment_successful=True)
+    tickets = ""
+    if request.method == 'POST':
+        month =request.POST['months']
+        tickets = BusRouteTicket.objects.all().filter(client_id=client.id, payment_successful=True).filter(created_date__month=month)
 
     context = {
         'client': client,
