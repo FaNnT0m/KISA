@@ -3,8 +3,9 @@
 <form method="post" class="d-block">
     {% csrf_token %}
     <div class="d-block pb-3">
-        Choose month
+        Choose month & year
     </div>
+
     <select name="months"> 
         <option value="1">January</option>
         <option value="2">February</option>
@@ -18,6 +19,11 @@
         <option value="10">October</option>
         <option value="11">November</option>
         <option value="12">December</option>
+    </select>
+    <select name="years">
+        {% for load_years in load_years %}
+             <option value="{{load_years}}">{{load_years}}</option>
+        {%endfor%}
     </select>
     <div class="row justify-content-center align-self-center pt-3">
         <button type="submit" class="btn btn-secondary d-block">Ok</button>

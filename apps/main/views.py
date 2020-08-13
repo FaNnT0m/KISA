@@ -62,15 +62,18 @@ def digital_wallet(request):
 
 @group_required(CLIENT_GROUP_NAME)
 def client_reports(request):
+    load_years= BusRouteTicket.objects.values_list('created_date__year',flat=True).distinct()
     client = request.user.client
     tickets = ""
     if request.method == 'POST':
+        year = request.POST['years']
         month =request.POST['months']
-        tickets = BusRouteTicket.objects.all().filter(client_id=client.id, payment_successful=True).filter(created_date__month=month)
+        tickets = BusRouteTicket.objects.all().filter(client_id=client.id, payment_successful=True).filter(created_date__month=month,created_date__year=year)
 
     context = {
         'client': client,
-        'tickets': list(tickets)
+        'tickets': list(tickets),
+        'load_years': list(load_years) 
     }
     return render(request, 'main/client_reports.html', context)
 
