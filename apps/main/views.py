@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import ClientRegisterForm
+from .forms import *
 from .decorators import *
 from .data import *
 from apps.main.models import *
@@ -12,7 +12,6 @@ def index(request):
 
 @group_required(DRIVER_GROUP_NAME)
 def ticket_payment(request):
-    # Con 'flat' retorna el set limpio, sin comillas ni parentesis
     values = BusRoute.objects.values('title','ticket_price')
     client = request.user.client
 
@@ -99,3 +98,8 @@ def driver_route(request):
         'tickets': list(tickets)
     }
     return render(request, 'main/driver_route.html', context)
+
+@group_required(CLIENT_GROUP_NAME)
+def card_ticket_payment(request):
+    form = PaymentMethodForm()
+    return render(request, 'main/card_ticket_payment.html',{'form':form})

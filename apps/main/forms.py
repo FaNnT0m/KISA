@@ -55,7 +55,10 @@ class PaymentMethodForm(forms.ModelForm): # Se crea la clase de forma de pago
 
     def clean(self):# se limpian los datos
         cleaned_data = super().clean()
-
-        if len(cleaned_data['cv2']) != 3:
+        
+        if len(cleaned_data['cv2']) != 3 :
             self.add_error('cv2', 'This field is required')# Se comenta que hay datos obligatorios
+
+        if len(cleaned_data['card_number']) != 16:
+            self.add_error('card_number', 'This field is required')# Se comenta que hay datos obligatorios
 
