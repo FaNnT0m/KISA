@@ -25,23 +25,23 @@
                     <div class="collapse navbar-collapse">
                         <ul class="flex-md-column flex-row navbar-nav w-100 justify-content-between sidebar-nav nav">
                             {% if user.is_authenticated and user.is_client %}
-                            <h3>Cliente</h3>
+                            <h3 class='text-light' >Client</h3>
                             <li class="mt-4">
                                 <a class="text-light" href="{% url 'digital_wallet' %}">
-                                    <span class=" fa fa-money"> <span>Monedero electronico</span></span>
+                                    <span class=" fa fa-money"> <span>Electronic wallet</span></span>
                                 </a>
                             </li>
                             <hr class="dropdown-divider">
                             <li class="mt-4">
                                 <a class="text-light" href="{% url 'client_reports' %}">
-                                    <span class="fa fa-book"> <span>Reportes</span></span>
+                                    <span class="fa fa-book"> <span>Reports</span></span>
                                     </span>
                                 </a>
                             </li>
                             <hr class="dropdown-divider">
                             <li class="mt-4">
                                 <a class="text-light" href="{% url 'card_ticket_payment' %}">
-                                    <span class="fa fa-credit-card-alt"> <span>Agregar tarjeta</span></span>
+                                    <span class="fa fa-credit-card-alt"> <span>Add credit card</span></span>
                                     </span>
                                 </a>
                             </li>
@@ -49,18 +49,18 @@
                             <h3>Conductor</h3>
                             <li class="mt-4">
                                 <a class="text-light" href="{% url 'driver_route' %}">
-                                    <span class="fa fa-money"> <span>Mi Ruta</span></span>
+                                    <span class="fa fa-money"> <span>My route</span></span>
                                 </a>
                             </li>
                             <hr class="dropdown-divider"> {% endif %}
                             <li class="mt-4">
                                 {% if user.is_authenticated %}
                                 <a class="text-light" href="{% url 'logout' %}">
-                                    <span class="fa fa-share-square-o"> <span>Cerrar sesion</span></span>
+                                    <span class="fa fa-share-square-o"> <span>Sign out</span></span>
                                 </a>
                                 {% else %}
                                 <a class="text-light" href="{% url 'login' %}">
-                                    <span class="fa fa-share-square-o"> <span>Ingresar</span></span>
+                                    <span class="fa fa-share-square-o"> <span>Sign in</span></span>
                                 </a>
                                 {% endif %}
                             </li>

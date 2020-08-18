@@ -5,16 +5,16 @@
         <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Iniciar sesion</legend>
+                <legend class="border-bottom mb-4">Sign in</legend>
                 {{ form.as_p }}
             </fieldset>
             <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Ingresar</button>
+                <button class="btn btn-outline-info" type="submit">Submit</button>
             </div>
         </form>
         <div class="border-top pt-3">
             <small class="text-muted">
-                No tienes una cuenta? <a class="ml-2" href="{% url 'register' %}">Registrate ya!</a>
+                You don't have an account? <a class="ml-2" href="{% url 'register' %}">Register now!</a>
             </small>
         </div>
     </div>
