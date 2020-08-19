@@ -2,34 +2,37 @@
 
 <form method="post" class="d-block">
     {% csrf_token %}
-    <div class="d-block pb-3">
+    <legend class="d-block mb-5 text-center border-bottom">
         Choose month & year
+    </legend>
+    <div class="mt-4 text-center">
+        <select name="months"class="form-control form-control-sm"> 
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+        </select>
+    </div>
+    <div class= "mt-4 text-center">
+        <select name="years" class="form-control form-control-sm">
+            {% for load_years in load_years %}
+                <option value="{{load_years}}">{{load_years}}</option>
+            {%endfor%}
+        </select>
+    </div>
+    <div class="row justify-content-center align-self-center pt-3">
+        <button type="submit" class="mt-5 d-block btn btn-info">Submit</button>
     </div>
 
-    <select name="months"> 
-        <option value="1">January</option>
-        <option value="2">February</option>
-        <option value="3">March</option>
-        <option value="4">April</option>
-        <option value="5">May</option>
-        <option value="6">June</option>
-        <option value="7">July</option>
-        <option value="8">August</option>
-        <option value="9">September</option>
-        <option value="10">October</option>
-        <option value="11">November</option>
-        <option value="12">December</option>
-    </select>
-    <select name="years">
-        {% for load_years in load_years %}
-             <option value="{{load_years}}">{{load_years}}</option>
-        {%endfor%}
-    </select>
-    <div class="row justify-content-center align-self-center pt-3">
-        <button type="submit" class="btn btn-secondary d-block">Ok</button>
-    </div>
-</form>
-<table class="table">
+<table class="table text-center mt-5">
     <thead>
         <tr>
             <th scope="col">Date</th>
@@ -54,6 +57,6 @@
         {%endfor%}
     </tbody>
 </table>
-
+</form>
 
 {% endblock %}
