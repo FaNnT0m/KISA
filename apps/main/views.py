@@ -101,5 +101,13 @@ def driver_route(request):
 
 @group_required(CLIENT_GROUP_NAME)
 def card_ticket_payment(request):
-    form = PaymentMethodForm()
+    if request.method == 'POST':
+        form = PaymentMethodForm(request.POST)
+        if form.is_valid():
+            client = form.save()
+            messages.success(request, f'Card added succesfully')
+            return redirect('card_ticket_payment')
+    else:
+        form =PaymentMethodForm()
+
     return render(request, 'main/card_ticket_payment.html',{'form':form})
