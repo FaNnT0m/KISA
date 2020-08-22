@@ -80,7 +80,7 @@ def client_reports(request):
         year = request.POST['years']
         month = request.POST['months']
         tickets = BusRouteTicket.objects.all().filter(client_id=client.id, payment_successful=True, created_date__month=month, created_date__year=year)
-        if tickets.count < 1:
+        if tickets.count() < 1:
             messages.info(request, f'You had no trips in the selected time period')
 
     context = {
@@ -100,6 +100,7 @@ def driver_route(request):
         client = Client.objects.all().filter(identification=client_identification).first()
         if not client:
             messages.error(request, f'No client with identification "{client_identification}" found!')
+            
         else:
             if client.charge_ticket(driver):
                 messages.success(request, f'Client charged succesfully!')

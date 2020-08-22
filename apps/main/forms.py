@@ -70,3 +70,9 @@ class PaymentMethodForm(forms.ModelForm):
             'postal_code',
         )
 
+    def clean_card_number(self):
+        card_number = self.cleaned_data['card_number']
+        if len(str(card_number)) != 16:
+            self.add_error('card_number', 'Card numbers have 16 digits')
+
+        return card_number
