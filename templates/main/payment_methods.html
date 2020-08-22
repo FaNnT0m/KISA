@@ -1,6 +1,6 @@
 {% extends "./base.html" %} {% block content %} {% load crispy_forms_tags %}
 <div class="content-section">
-    <form action="POST">
+    <form method="POST" action="{%url 'payment_methods' %}">
         {% csrf_token %}
         <fieldset class="form-group">
             <legend class="border-bottom mb-4">Pay with your card</legend>

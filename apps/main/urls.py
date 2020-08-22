@@ -12,6 +12,5 @@ urlpatterns = [
     path('digital_wallet/', views.digital_wallet, name='digital_wallet'),
     path("client_reports/", views.client_reports, name="client_reports"),
     path("driver_route/", views.driver_route, name="driver_route"),
-    path("card_ticket_payment/", views.card_ticket_payment, name="card_ticket_payment")
-
+    path("payment_methods/", views.payment_methods, name="payment_methods"),
 ]
