@@ -1,61 +1,91 @@
 {% extends "./base.html" %} {% block content %}
 
-<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#chargeClientModal">
-    Charge 
-</button>
-
-<div class="modal fade" id="chargeClientModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-        <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Charge client</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body text-center mb-2">
-           Charge a client
-            <form method="POST" action="{%url 'driver_route' %}">
-                {% csrf_token %}
-                <label for="client_identification">Client ID</label><br>
-                <input type="text" id="client_identification" name="client_identification" value="" class ="input-group-text form-control"><br>
-                <input type="submit" value="Charge" class= "btn btn-info mt-5">
-            </form>
-        </div>
-        
+<div>
+    <div class="modal fade" id="chargeClientModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Charge client</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center mb-2">
+                    <form method="POST" action="{%url 'driver_route' %}">
+                        {% csrf_token %}
+                        <label for="client_identification">Client's Identification</label><br>
+                        <input type="text" id="client_identification" name="client_identification" value="" class ="input-group-text form-control"><br>
+                        <input type="submit" value="Charge" class= "btn btn-info mt-5">
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
+    <div class="row">
+        <legend class="d-block mb-5 text-center border-bottom">
+            Charge new passengers
+        </legend>
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#chargeClientModal">
+            Charge 
+        </button>
+    </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <legend class="d-block mb-5 text-center border-bottom">
+                    Reports
+                </legend>
+            </div>
+        </div>
+        <form method="GET" class="d-block">
+            {% csrf_token %}
+            <div class="row">
+                <div class="col-md-9">
+                    Day to filter <input id="datePicker" type="date" name="date">
+                </div>
+                <div class="col-md-3">
+                    <button type="submit" class="btn btn-info">Filter</button>
+                </div>
+            </div>
+        </form>
+
+    <table class="table text-center">
+        <thead>
+            <tr>
+                <th scope="col">Date</th>
+                <th scope="col">Client</th>
+                <th scope="col">Ticket price</th>
+                <th scope="col">Successful payment</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for ticket in tickets %}
+            <tr>
+                <td>
+                    {{ticket.created_date}}
+                </td>
+                <td>
+                    {{ticket.client.identification}}
+                </td>
+                <td>
+                    {{ticket.ticket_price}}
+                </td>
+                <td>
+                    {{ticket.payment_successful}}
+                </td>
+            </tr>
+            {%endfor%}
+        </tbody>
+    </table>
 </div>
 
-<table class="table text-center">
-    <thead>
-        <tr>
-            <th scope="col">Date</th>
-            <th scope="col">Client</th>
-            <th scope="col">Ticket price</th>
-            <th scope="col">Successful payment</th>
-        </tr>
-    </thead>
-    {% comment %} TODO: Filtrar por dia {% endcomment %}
-    <tbody>
-        {% for ticket in tickets %}
-        <tr>
-            <td>
-                {{ticket.created_date}}
-            </td>
-            <td>
-                {{ticket.client.identification}}
-            </td>
-            <td>
-                {{ticket.ticket_price}}
-            </td>
-            <td>
-                {{ticket.payment_successful}}
-            </td>
-        </tr>
-        {%endfor%}
-    </tbody>
-</table>
+<script>
+    Date.prototype.toDateInputValue = (function() {
+        var local = new Date(this);
+        local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+        return local.toJSON().slice(0, 10);
+    });
 
+    document.getElementById('datePicker').value = new Date().toDateInputValue()
+</script>
 
 {% endblock %}

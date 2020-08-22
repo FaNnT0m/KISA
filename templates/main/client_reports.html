@@ -3,7 +3,7 @@
 <form method="post" class="d-block">
     {% csrf_token %}
     <legend class="d-block mb-5 text-center border-bottom">
-        Choose month & year
+        Choose a month & year
     </legend>
     <div class="mt-4 text-center">
         <select name="months"class="form-control form-control-sm"> 
@@ -29,32 +29,33 @@
         </select>
     </div>
     <div class="row justify-content-center align-self-center pt-3">
-        <button type="submit" class="mt-5 d-block btn btn-info">Submit</button>
+        <button type="submit" class="mt-5 d-block btn btn-info">Filter</button>
     </div>
-    <table class="table text-center mt-5">
-        <thead>
-            <tr>
-                <th scope="col">Date</th>
-                <th scope="col">Route</th>
-                <th scope="col">Spent</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for ticket in tickets %}
-            <tr>
-                <td>
-                    {{ticket.created_date}}
-                </td>
-                <td>
-                    {{ticket.driver.bus_route.title}}
-                </td>
-                <td>
-                    {{ticket.ticket_price}}
-                </td>
-            </tr>
-            {%endfor%}
-        </tbody>
-    </table>
 </form>
+
+<table class="table text-center mt-5">
+    <thead>
+        <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Route</th>
+            <th scope="col">Spent</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ticket in tickets %}
+        <tr>
+            <td>
+                {{ticket.created_date}}
+            </td>
+            <td>
+                {{ticket.driver.bus_route.title}}
+            </td>
+            <td>
+                {{ticket.ticket_price}}
+            </td>
+        </tr>
+        {%endfor%}
+    </tbody>
+</table>
 
 {% endblock %}

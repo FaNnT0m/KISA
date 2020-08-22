@@ -28,7 +28,7 @@
                             <h3 class='text-light' >Client</h3>
                             <li class="mt-4">
                                 <a class="text-light" href="{% url 'digital_wallet' %}">
-                                    <span class=" fa fa-money"> <span>Electronic wallet</span></span>
+                                    <span class=" fa fa-money"> <span>My wallet</span></span>
                                 </a>
                             </li>
                             <hr class="dropdown-divider">
@@ -39,20 +39,16 @@
                                 </a>
                             </li>
                             <hr class="dropdown-divider">
-                            <li class="mt-4">
-                                <a class="text-light" href="{% url 'payment_methods' %}">
-                                    <span class="fa fa-credit-card-alt"> <span>Add credit card</span></span>
-                                    </span>
-                                </a>
-                            </li>
-                            <hr class="dropdown-divider"> {% endif %} {% if user.is_authenticated and user.is_driver %}
+                            {% endif %}
+                            {% if user.is_authenticated and user.is_driver %}
                             <h3 class="text-light">Driver</h3>
                             <li class="mt-4">
                                 <a class="text-light" href="{% url 'driver_route' %}">
                                     <span class="fa fa-money"> <span>My route</span></span>
                                 </a>
                             </li>
-                            <hr class="dropdown-divider"> {% endif %}
+                            <hr class="dropdown-divider">
+                            {% endif %}
                             <li class="mt-4">
                                 {% if user.is_authenticated %}
                                 <a class="text-light" href="{% url 'logout' %}">
@@ -69,12 +65,20 @@
                     </div>
                 </nav>
             </aside>
-            <div class="row d-flex justify-content-center align-items-center col-9" id="content" , name="content">
-                {% if messages %} {% for message in messages %}
-                <div class=" mr-5  alert alert-{{ message.tags }}">
-                    {{ message }}
+            <div class="container justify-content-center align-items-center col-9" id="content" name="content" style="padding:10%;">
+                {% if messages %}
+                <div class="row justify-content-center align-items-center">
+                    {% for message in messages %}
+                    <div class="mr-5  alert alert-{{ message.tags }}">
+                        {{ message }}
+                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %} {% endif %} {% block content %} {% endblock %}
+                {% endif %}
+                <div class="row justify-content-center align-items-center">
+                    {% block content %}
+                    {% endblock %}
+                </div>
             </div>
         </div>
     </div>
