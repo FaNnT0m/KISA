@@ -40,13 +40,13 @@
                             </li>
                             <hr class="dropdown-divider">
                             <li class="mt-4">
-                                <a class="text-light" href="{% url 'card_ticket_payment' %}">
+                                <a class="text-light" href="{% url 'payment_methods' %}">
                                     <span class="fa fa-credit-card-alt"> <span>Add credit card</span></span>
                                     </span>
                                 </a>
                             </li>
                             <hr class="dropdown-divider"> {% endif %} {% if user.is_authenticated and user.is_driver %}
-                            <h3>Conductor</h3>
+                            <h3 class="text-light">Driver</h3>
                             <li class="mt-4">
                                 <a class="text-light" href="{% url 'driver_route' %}">
                                     <span class="fa fa-money"> <span>My route</span></span>
@@ -71,7 +71,7 @@
             </aside>
             <div class="row d-flex justify-content-center align-items-center col-9" id="content" , name="content">
                 {% if messages %} {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
+                <div class=" mr-5  alert alert-{{ message.tags }}">
                     {{ message }}
                 </div>
                 {% endfor %} {% endif %} {% block content %} {% endblock %}

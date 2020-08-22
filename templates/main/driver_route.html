@@ -1,41 +1,39 @@
 {% extends "./base.html" %} {% block content %}
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#chargeClientModal">
-    Cobrarle a cliente
+<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#chargeClientModal">
+    Charge 
 </button>
 
 <div class="modal fade" id="chargeClientModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Cobrarle a cliente</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Charge client</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
             </button>
         </div>
-        <div class="modal-body">
-            Cobre a un cliente para su uso del servicio
+        <div class="modal-body text-center mb-2">
+           Charge a client
             <form method="POST" action="{%url 'driver_route' %}">
                 {% csrf_token %}
-                <label for="client_identification">Identificacion del cliente</label><br>
-                <input type="text" id="client_identification" name="client_identification" value=""><br>
-                <input type="submit" value="Cobrar">
+                <label for="client_identification">Client ID</label><br>
+                <input type="text" id="client_identification" name="client_identification" value="" class ="input-group-text form-control"><br>
+                <input type="submit" value="Charge" class= "btn btn-info mt-5">
             </form>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-        </div>
+        
         </div>
     </div>
 </div>
 
-<table class="table">
+<table class="table text-center">
     <thead>
         <tr>
-            <th scope="col">Fecha</th>
-            <th scope="col">Cliente</th>
-            <th scope="col">Precio del pasaje</th>
-            <th scope="col">Pago exitoso</th>
+            <th scope="col">Date</th>
+            <th scope="col">Client</th>
+            <th scope="col">Ticket price</th>
+            <th scope="col">Successful payment</th>
         </tr>
     </thead>
     {% comment %} TODO: Filtrar por dia {% endcomment %}
