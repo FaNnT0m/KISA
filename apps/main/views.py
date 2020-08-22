@@ -52,7 +52,7 @@ def digital_wallet(request):
     if request.method == 'POST':
         form = PaymentMethodForm(request.POST)
         balance_to_add = int(request.POST['balance_to_add'])
-        if balance_to_add < 0:
+        if balance_to_add <= 0:
             messages.error(request, f'You must enter a balance to add greater than 0!')
             return redirect('digital_wallet')
         if form.is_valid():
