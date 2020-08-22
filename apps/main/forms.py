@@ -73,6 +73,20 @@ class PaymentMethodForm(forms.ModelForm):
     def clean_card_number(self):
         card_number = self.cleaned_data['card_number']
         if len(str(card_number)) != 16:
-            self.add_error('card_number', 'Card numbers have 16 digits')
+            self.add_error('card_number', 'Card numbers must have 16 digits')
 
         return card_number
+   
+    def clean_cv(self):        
+        cv2 = self.cleaned_data['cv2']
+        if len(str(cv2)) !=3:
+            self.add_error('cv2', 'Cv2 must have 3 digits')
+        return cv2   
+
+    def clean_postal_code(self):
+        postal_code=self.cleaned_data['postal_code']
+        if len(str(postal_code)) !=3:
+            self.add_error('postal_code', 'Postal code must have 3 digits')
+        return postal_code
+
+    
