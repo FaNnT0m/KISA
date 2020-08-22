@@ -81,16 +81,12 @@ class PaymentMethodForm(forms.ModelForm):
         cv2 = self.cleaned_data['cv2']
         if len(str(cv2)) !=3:
             self.add_error('cv2', 'Cv2 must have 3 digits')
-        if (cv2) != int:
-            self.add_error('cv2', 'Cv2 must have numbers')
         return cv2   
 
     def clean_postal_code(self):
         postal_code=self.cleaned_data['postal_code']
         if len(str(postal_code)) !=3:
             self.add_error('postal_code', 'Postal code must have 3 digits')
-        if (postal_code) != int:
-              self.add_error('postal_code', 'Postal code must have numbers')
         return postal_code
 
     
