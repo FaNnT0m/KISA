@@ -1,14 +1,21 @@
 {% extends "./base.html" %} {% block content %}
-<!---->
-<div class ="col-md-4 col-md-offset-4">
-    <div class= "text-center">
-        <legend for="balance_to_add" class=" mb-4 border-bottom">Recharge money</legend><br> 
-        <div class="mb-4 text-center">Balance: {{client.balance}}</div>
-        <form method="POST" action="{%url 'digital_wallet' %}">
-            {% csrf_token %}
+{% load crispy_forms_tags %}
+<div>
+    <legend class="border-bottom">Current balance:</legend>
+    <h3>{{client.balance}} colones</h3>
+    <br>
+    <form method="POST"">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom">Add balance with card</legend>
+            {{ form | crispy }}
+            <label for="balance_to_add">Balance to add</label><br> 
             <input type="text" id="balance_to_add" name="balance_to_add" value="0" class= "mb-4 form-control"><br>
-            <input class="btn btn-info" type="submit" value="Submit">
-        </form>
-    </div>
+        </fieldset>
+        <div class="form-group text-center">
+            <button class="btn btn-info" type="submit">Pay</button>
+        </div>
+    </form>
 </div>
+
 {% endblock %}
